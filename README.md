@@ -40,6 +40,10 @@ Character embeddings: [gigaword_chn.all.a2b.uni.ite50.vec](https://pan.baidu.com
 Word(Lattice) embeddings: [ctb.50d.vec](https://pan.baidu.com/s/1pLO6T9D)
 
 
+Resume NER data 
+====
+Crawled from the Sina Finance, it includes the resumes of senior executives from listed companies in the Chinese stock market. Details can be found in our paper.
+
 
 Cite: 
 ========
