@@ -14,7 +14,7 @@ Requirement:
 
 Input format:
 ======
-CoNLL format, with each character its label for one line. Sentences are splited with a null line.
+CoNLL format (prefer BIOES tag scheme), with each character its label for one line. Sentences are splited with a null line.
 
 	美	B-LOC
 	国	E-LOC

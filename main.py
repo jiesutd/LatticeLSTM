@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-05-14 22:00:16
+# @Last Modified time: 2018-06-25 10:08:49
 
 import time
 import sys
@@ -425,7 +425,7 @@ if __name__ == '__main__':
         data.HP_batch_size = 1
         data.use_bigram = True
         data.gaz_dropout = 0.5
-        data.norm_gaz_emb = True
+        data.norm_gaz_emb = False
         data.HP_fix_gaz_emb = False
         data_initialization(data, gaz_file, train_file, dev_file, test_file)
         data.generate_instance_with_gaz(train_file,'train')
