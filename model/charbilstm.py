@@ -3,6 +3,7 @@
 # @Date:   2017-10-17 16:47:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2017-12-06 16:21:33
+from __future__ import print_function
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -13,7 +14,7 @@ import numpy as np
 class CharBiLSTM(nn.Module):
     def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiLSTM, self).__init__()
-        print "build batched char bilstm..."
+        print("build batched char bilstm...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:

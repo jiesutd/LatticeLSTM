@@ -3,10 +3,19 @@
 # @Date:   2017-06-15 14:23:06
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-05-12 22:09:37
+from __future__ import absolute_import, print_function
 import sys
 import numpy as np
-from alphabet import Alphabet
+from .alphabet import Alphabet
+
+try:
+    xrange          # Python 2
+except NameError:
+    xrange = range  # Python 3
+
 NULLKEY = "-null-"
+
+
 def normalize_word(word):
     new_word = ""
     for char in word:
@@ -331,5 +340,5 @@ def load_pretrain_emb(embedding_path):
 
 if __name__ == '__main__':
     a = np.arange(9.0)
-    print a
-    print norm2one(a)
+    print(a)
+    print(norm2one(a))

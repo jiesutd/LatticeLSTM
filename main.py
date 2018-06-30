@@ -4,6 +4,7 @@
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-06-25 10:08:49
 
+from __future__ import print_function
 import time
 import sys
 import argparse
@@ -101,19 +102,19 @@ def save_data_setting(data, save_file):
     ## save data settings
     with open(save_file, 'w') as fp:
         pickle.dump(new_data, fp)
-    print "Data setting saved to file: ", save_file
+    print("Data setting saved to file: ", save_file)
 
 
 def load_data_setting(save_file):
     with open(save_file, 'r') as fp:
         data = pickle.load(fp)
-    print "Data setting loaded from file: ", save_file
+    print("Data setting loaded from file: ", save_file)
     data.show_data_summary()
     return data
 
 def lr_decay(optimizer, epoch, decay_rate, init_lr):
     lr = init_lr * ((1-decay_rate)**epoch)
-    print " Learning rate is setted as:", lr
+    print(" Learning rate is setted as:", lr)
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
     return optimizer
@@ -130,7 +131,7 @@ def evaluate(data, model, name):
     elif name == 'raw':
         instances = data.raw_Ids
     else:
-        print "Error: wrong evaluate name,", name
+        print("Error: wrong evaluate name,", name)
     right_token = 0
     whole_token = 0
     pred_results = []
@@ -234,12 +235,12 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
 
 
 def train(data, save_model_dir, seg=True):
-    print "Training model..."
+    print("Training model...")
     data.show_data_summary()
     save_data_name = save_model_dir +".dset"
     save_data_setting(data, save_data_name)
     model = SeqModel(data)
-    print "finished built model."
+    print("finished built model.")
     loss_function = nn.NLLLoss()
     parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = optim.SGD(parameters, lr=data.HP_lr, momentum=data.HP_momentum)
@@ -319,9 +320,9 @@ def train(data, save_model_dir, seg=True):
 
         if current_score > best_dev:
             if seg:
-                print "Exceed previous best f score:", best_dev
+                print("Exceed previous best f score:", best_dev)
             else:
-                print "Exceed previous best acc score:", best_dev
+                print("Exceed previous best acc score:", best_dev)
             model_name = save_model_dir +'.'+ str(idx) + ".model"
             torch.save(model.state_dict(), model_name)
             best_dev = current_score 
@@ -338,7 +339,7 @@ def train(data, save_model_dir, seg=True):
 
 def load_model_decode(model_dir, data, name, gpu, seg=True):
     data.HP_gpu = gpu
-    print "Load Model from file: ", model_dir
+    print("Load Model from file: ", model_dir)
     model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
@@ -402,20 +403,20 @@ if __name__ == '__main__':
     # char_emb = None
     #bichar_emb = None
 
-    print "CuDNN:", torch.backends.cudnn.enabled
+    print("CuDNN:", torch.backends.cudnn.enabled)
     # gpu = False
-    print "GPU available:", gpu
-    print "Status:", status
-    print "Seg: ", seg
-    print "Train file:", train_file
-    print "Dev file:", dev_file
-    print "Test file:", test_file
-    print "Raw file:", raw_file
-    print "Char emb:", char_emb
-    print "Bichar emb:", bichar_emb
-    print "Gaz file:",gaz_file
+    print("GPU available:", gpu)
+    print("Status:", status)
+    print("Seg: ", seg)
+    print("Train file:", train_file)
+    print("Dev file:", dev_file)
+    print("Test file:", test_file)
+    print("Raw file:", raw_file)
+    print("Char emb:", char_emb)
+    print("Bichar emb:", bichar_emb)
+    print("Gaz file:",gaz_file)
     if status == 'train':
-        print "Model saved to:", save_model_dir
+        print("Model saved to:", save_model_dir)
     sys.stdout.flush()
     
     if status == 'train':
@@ -447,7 +448,7 @@ if __name__ == '__main__':
         decode_results = load_model_decode(model_dir, data, 'raw', gpu, seg)
         data.write_decoded_results(output_file, decode_results, 'raw')
     else:
-        print "Invalid argument! Please use valid arguments! (train/test/decode)"
+        print("Invalid argument! Please use valid arguments! (train/test/decode)")
 
 
 
