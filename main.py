@@ -2,7 +2,7 @@
 # @Author: Jie
 # @Date:   2017-06-15 14:11:08
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2018-06-25 10:08:49
+# @Last Modified time: 2018-07-06 11:08:27
 
 import time
 import sys
@@ -393,12 +393,11 @@ if __name__ == '__main__':
 
     save_model_dir = args.savemodel
     gpu = torch.cuda.is_available()
-    # char_emb = "../data/joint4.all.b10c1.2h.iter17.mchar"
-    # bichar_emb = "../data/joint4.all.b10c1.2h.iter17.mbichar"
+
     char_emb = "data/gigaword_chn.all.a2b.uni.ite50.vec"
-    bichar_emb = "data/gigaword_chn.all.a2b.bi.ite50.vec"
+    bichar_emb = None
     gaz_file = "data/ctb.50d.vec"
-    gaz_file = None
+    # gaz_file = None
     # char_emb = None
     #bichar_emb = None
 
@@ -423,7 +422,7 @@ if __name__ == '__main__':
         data.HP_gpu = gpu
         data.HP_use_char = False
         data.HP_batch_size = 1
-        data.use_bigram = True
+        data.use_bigram = False
         data.gaz_dropout = 0.5
         data.norm_gaz_emb = False
         data.HP_fix_gaz_emb = False

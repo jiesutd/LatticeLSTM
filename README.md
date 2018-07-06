@@ -39,6 +39,12 @@ Character embeddings: [gigaword_chn.all.a2b.uni.ite50.vec](https://pan.baidu.com
 
 Word(Lattice) embeddings: [ctb.50d.vec](https://pan.baidu.com/s/1pLO6T9D)
 
+How to run the code?
+====
+1. Download the character embeddings and word embeddings and put them in the `data` folder.
+2. Modify the `run_main.py` or `run_demo.py` by adding your train/dev/test file directory.
+3. `sh run_main.py` or `sh run_demo.py`
+
 
 Resume NER data 
 ====

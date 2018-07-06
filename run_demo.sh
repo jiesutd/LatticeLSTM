@@ -1,8 +1,8 @@
 python main.py --status train \
-		--train ../data/onto4ner.cn/demo.train.char \
-		--dev ../data/onto4ner.cn/demo.dev.char \
-		--test ../data/onto4ner.cn/demo.test.char \
-		--savemodel ../data/onto4ner.cn/demo \
+		--train ../data/demo.train.char \
+		--dev ../data/demo.dev.char \
+		--test ../data/odemo.test.char \
+		--savemodel ../data/demo \
 
 
 # python main.py --status decode \
