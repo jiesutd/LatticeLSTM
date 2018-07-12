@@ -10,3 +10,6 @@ python main.py --status train \
 # 		--savedset ../data/onto4ner.cn/demo.dset \
 # 		--loadmodel ../data/onto4ner.cn/demo.0.model \
 # 		--output ../data/onto4ner.cn/demo.raw.out \
+
+
+python main.py --status train --train ./data/demo.train.char --dev ./data/demo.dev.char --test ./data/odemo.test.char --savemodel ./data/demo
