@@ -99,7 +99,7 @@ class Alphabet:
         """
         saving_name = name if name else self.__name
         try:
-            json.dump(self.get_content(), open(os.path.join(output_directory, saving_name + ".json"), 'w'))
+            json.dump(self.get_content(), open(os.path.join(output_directory, saving_name + ".json"), 'w', encoding="utf-8"))
         except Exception as e:
             print("Exception: Alphabet is not saved: " % repr(e))
 

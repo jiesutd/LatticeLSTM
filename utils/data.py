@@ -3,10 +3,11 @@
 # @Date:   2017-06-14 17:34:32
 # @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
 # @Last Modified time: 2018-01-29 15:26:51
+import sys
+
+from .alphabet import Alphabet
 from .functions import *
 from .gazetteer import Gazetteer
-from .alphabet import Alphabet
-import sys
 
 START = "</s>"
 UNKNOWN = "</unk>"
@@ -124,7 +125,7 @@ class Data:
     def refresh_label_alphabet(self, input_file):
         old_size = self.label_alphabet_size
         self.label_alphabet.clear(True)
-        in_lines = open(input_file, 'r').readlines()
+        in_lines = open(input_file, 'r', encoding="utf-8").readlines()
         for line in in_lines:
             if len(line) > 2:
                 pairs = line.strip().split()
@@ -185,7 +186,7 @@ class Data:
     def build_gaz_file(self, gaz_file):
         ## build gaz file,initial read gaz embedding file
         if gaz_file:
-            fins = open(gaz_file, 'r').readlines()
+            fins = open(gaz_file, 'r', encoding="utf-8").readlines()
             for fin in fins:
                 fin = fin.strip().split()[0]
                 if fin:
@@ -195,7 +196,7 @@ class Data:
             print("Gaz file is None, load nothing")
 
     def build_gaz_alphabet(self, input_file):
-        in_lines = open(input_file, 'r').readlines()
+        in_lines = open(input_file, 'r', encoding="utf-8").readlines()
         word_list = []
         for line in in_lines:
             if len(line) > 3:
@@ -284,7 +285,7 @@ class Data:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s" % (name))
 
     def write_decoded_results(self, output_file, predict_results, name):
-        fout = open(output_file, 'w')
+        fout = open(output_file, 'w', encoding="utf-8")
         sent_num = len(predict_results)
         content_list = []
         if name == 'raw':
