@@ -422,7 +422,7 @@ if __name__ == '__main__':
 
     print
     "CuDNN:", torch.backends.cudnn.enabled
-    # gpu = False
+    gpu = False
     print
     "GPU available:", gpu
     print
