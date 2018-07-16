@@ -208,7 +208,7 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
     mask = mask[word_perm_idx]
     ### deal with char
     # pad_chars (batch_size, max_seq_len)
-    pad_chars = [chars[idx] + [[0]] * (max_seq_len.item() - len(chars[idx])) for idx in range(len(chars))]
+    pad_chars = [chars[idx] + [[0]] * (max_seq_len - len(chars[idx])) for idx in range(len(chars))]
     length_list = [map(len, pad_char) for pad_char in pad_chars]
     max_word_len = max(map(max, length_list))
     char_seq_tensor = autograd.Variable(torch.zeros((batch_size, max_seq_len, max_word_len)),
@@ -218,8 +218,8 @@ def batchify_with_label(input_batch_list, gpu, volatile_flag=False):
         for idy, (word, wordlen) in enumerate(zip(seq, seqlen)):
             # print len(word), wordlen
             char_seq_tensor[idx, idy, :wordlen] = torch.LongTensor(word)
-    char_seq_tensor = char_seq_tensor[word_perm_idx].view(batch_size * max_seq_len.item(), -1)
-    char_seq_lengths = char_seq_lengths[word_perm_idx].view(batch_size * max_seq_len.item(), )
+    char_seq_tensor = char_seq_tensor[word_perm_idx].view(batch_size * max_seq_len, -1)
+    char_seq_lengths = char_seq_lengths[word_perm_idx].view(batch_size * max_seq_len, )
     char_seq_lengths, char_perm_idx = char_seq_lengths.sort(0, descending=True)
     char_seq_tensor = char_seq_tensor[char_perm_idx]
     _, char_seq_recover = char_perm_idx.sort(0, descending=False)
