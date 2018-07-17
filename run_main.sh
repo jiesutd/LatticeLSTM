@@ -4,7 +4,6 @@ python main.py --status train \
 		--test ./data/test.txt \
 		--savemodel ./data/NER/saved_model \
 
-
 # python main.py --status decode \
 # 		--raw ../data/onto4ner.cn/test.char.bmes \
 # 		--savedset ../data/onto4ner.cn/saved_model \
