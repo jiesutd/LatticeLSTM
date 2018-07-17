@@ -5,9 +5,9 @@
 # @Last Modified time: 2018-01-29 15:26:51
 import sys
 
-from .alphabet import Alphabet
-from .functions import *
-from .gazetteer import Gazetteer
+from alphabet import Alphabet
+from functions import *
+from gazetteer import Gazetteer
 
 START = "</s>"
 UNKNOWN = "</unk>"
@@ -125,7 +125,7 @@ class Data:
     def refresh_label_alphabet(self, input_file):
         old_size = self.label_alphabet_size
         self.label_alphabet.clear(True)
-        in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+        in_lines = open(input_file, 'r').readlines()
         for line in in_lines:
             if len(line) > 2:
                 pairs = line.strip().split()
@@ -148,19 +148,19 @@ class Data:
         print("Refresh label alphabet finished: old:%s -> new:%s" % (old_size, self.label_alphabet_size))
 
     def build_alphabet(self, input_file):
-        in_lines = open(input_file, 'r', encoding='utf-8').readlines()
-        for idx in range(len(in_lines)):
+        in_lines = open(input_file, 'r').readlines()
+        for idx in xrange(len(in_lines)):
             line = in_lines[idx]
             if len(line) > 2:
                 pairs = line.strip().split()
-                word = pairs[0]
+                word = pairs[0].decode('utf-8')
                 if self.number_normalized:
                     word = normalize_word(word)
                 label = pairs[-1]
                 self.label_alphabet.add(label)
                 self.word_alphabet.add(word)
                 if idx < len(in_lines) - 1 and len(in_lines[idx + 1]) > 2:
-                    biword = word + in_lines[idx + 1].strip().split()[0]
+                    biword = word + in_lines[idx + 1].strip().split()[0].decode('utf-8')
                 else:
                     biword = word + NULLKEY
                 self.biword_alphabet.add(biword)
@@ -186,21 +186,21 @@ class Data:
     def build_gaz_file(self, gaz_file):
         ## build gaz file,initial read gaz embedding file
         if gaz_file:
-            fins = open(gaz_file, 'r', encoding="utf-8").readlines()
+            fins = open(gaz_file, 'r').readlines()
             for fin in fins:
-                fin = fin.strip().split()[0]
+                fin = fin.strip().split()[0].decode('utf-8')
                 if fin:
                     self.gaz.insert(fin, "one_source")
-            print("Load gaz file: ", gaz_file, " total size:", self.gaz.size())
+            print "Load gaz file: ", gaz_file, " total size:", self.gaz.size()
         else:
-            print("Gaz file is None, load nothing")
+            print "Gaz file is None, load nothing"
 
     def build_gaz_alphabet(self, input_file):
-        in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+        in_lines = open(input_file, 'r').readlines()
         word_list = []
         for line in in_lines:
             if len(line) > 3:
-                word = line.split()[0]
+                word = line.split()[0].decode('utf-8')
                 if self.number_normalized:
                     word = normalize_word(word)
                 word_list.append(word)
@@ -212,7 +212,7 @@ class Data:
                         # print entity, self.gaz.searchId(entity),self.gaz.searchType(entity)
                         self.gaz_alphabet.add(entity)
                 word_list = []
-        print("gaz alphabet size:", self.gaz_alphabet.size())
+        print "gaz alphabet size:", self.gaz_alphabet.size()
 
     def fix_alphabet(self):
         self.word_alphabet.close()
@@ -222,19 +222,19 @@ class Data:
         self.gaz_alphabet.close()
 
     def build_word_pretrain_emb(self, emb_path):
-        print("build word pretrain emb...")
+        print "build word pretrain emb..."
         self.pretrain_word_embedding, self.word_emb_dim = build_pretrain_embedding(emb_path, self.word_alphabet,
                                                                                    self.word_emb_dim,
                                                                                    self.norm_word_emb)
 
     def build_biword_pretrain_emb(self, emb_path):
-        print("build biword pretrain emb...")
+        print "build biword pretrain emb..."
         self.pretrain_biword_embedding, self.biword_emb_dim = build_pretrain_embedding(emb_path, self.biword_alphabet,
                                                                                        self.biword_emb_dim,
                                                                                        self.norm_biword_emb)
 
     def build_gaz_pretrain_emb(self, emb_path):
-        print("build gaz pretrain emb...")
+        print "build gaz pretrain emb..."
         self.pretrain_gaz_embedding, self.gaz_emb_dim = build_pretrain_embedding(emb_path, self.gaz_alphabet,
                                                                                  self.gaz_emb_dim, self.norm_gaz_emb)
 
@@ -285,7 +285,7 @@ class Data:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s" % (name))
 
     def write_decoded_results(self, output_file, predict_results, name):
-        fout = open(output_file, 'w', encoding="utf-8")
+        fout = open(output_file, 'w')
         sent_num = len(predict_results)
         content_list = []
         if name == 'raw':

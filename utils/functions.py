@@ -20,7 +20,7 @@ def normalize_word(word):
 
 def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, number_normalized, max_sent_length,
                   char_padding_size=-1, char_padding_symbol='</pad>'):
-    in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+    in_lines = open(input_file, 'r').readlines()
     instence_texts = []
     instence_Ids = []
     words = []
@@ -32,7 +32,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, numb
     for line in in_lines:
         if len(line) > 2:
             pairs = line.strip().split()
-            word = pairs[0]
+            word = pairs[0].decode('utf-8')
             if number_normalized:
                 word = normalize_word(word)
             label = pairs[-1]
@@ -71,7 +71,7 @@ def read_instance(input_file, word_alphabet, char_alphabet, label_alphabet, numb
 
 def read_seg_instance(input_file, word_alphabet, biword_alphabet, char_alphabet, label_alphabet, number_normalized,
                       max_sent_length, char_padding_size=-1, char_padding_symbol='</pad>'):
-    in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+    in_lines = open(input_file, 'r').readlines()
     instence_texts = []
     instence_Ids = []
     words = []
@@ -82,17 +82,17 @@ def read_seg_instance(input_file, word_alphabet, biword_alphabet, char_alphabet,
     biword_Ids = []
     char_Ids = []
     label_Ids = []
-    for idx in range(len(in_lines)):
+    for idx in xrange(len(in_lines)):
         line = in_lines[idx]
         if len(line) > 2:
             pairs = line.strip().split()
-            word = pairs[0]
+            word = pairs[0].decode('utf-8')
             if number_normalized:
                 word = normalize_word(word)
             label = pairs[-1]
             words.append(word)
             if idx < len(in_lines) - 1 and len(in_lines[idx + 1]) > 2:
-                biword = word + in_lines[idx + 1].strip().split()[0]
+                biword = word + in_lines[idx + 1].strip().split()[0].decode('utf-8')
             else:
                 biword = word + NULLKEY
             biwords.append(biword)
@@ -133,7 +133,7 @@ def read_seg_instance(input_file, word_alphabet, biword_alphabet, char_alphabet,
 
 def read_instance_with_gaz(input_file, gaz, word_alphabet, biword_alphabet, char_alphabet, gaz_alphabet, label_alphabet,
                            number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol='</pad>'):
-    in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+    in_lines = open(input_file, 'r').readlines()
     instence_texts = []
     instence_Ids = []
     words = []
@@ -144,16 +144,16 @@ def read_instance_with_gaz(input_file, gaz, word_alphabet, biword_alphabet, char
     biword_Ids = []
     char_Ids = []
     label_Ids = []
-    for idx in range(len(in_lines)):
+    for idx in xrange(len(in_lines)):
         line = in_lines[idx]
         if len(line) > 2:
             pairs = line.strip().split()
-            word = pairs[0]
+            word = pairs[0].decode('utf-8')
             if number_normalized:
                 word = normalize_word(word)
             label = pairs[-1]
             if idx < len(in_lines) - 1 and len(in_lines[idx + 1]) > 2:
-                biword = word + in_lines[idx + 1].strip().split()[0]
+                biword = word + in_lines[idx + 1].strip().split()[0].decode('utf-8')
             else:
                 biword = word + NULLKEY
             biwords.append(biword)
@@ -224,11 +224,11 @@ def read_instance_with_gaz(input_file, gaz, word_alphabet, biword_alphabet, char
 def read_instance_with_gaz_in_sentence(input_file, gaz, word_alphabet, biword_alphabet, char_alphabet, gaz_alphabet,
                                        label_alphabet, number_normalized, max_sent_length, char_padding_size=-1,
                                        char_padding_symbol='</pad>'):
-    in_lines = open(input_file, 'r', encoding="utf-8").readlines()
+    in_lines = open(input_file, 'r').readlines()
     instence_texts = []
     instence_Ids = []
-    for idx in range(len(in_lines)):
-        pair = in_lines[idx].strip().split()
+    for idx in xrange(len(in_lines)):
+        pair = in_lines[idx].strip().decode('utf-8').split()
         orig_words = list(pair[0])
 
         if (max_sent_length > 0) and (len(orig_words) > max_sent_length):
@@ -321,7 +321,7 @@ def norm2one(vec):
 def load_pretrain_emb(embedding_path):
     embedd_dim = -1
     embedd_dict = dict()
-    with open(embedding_path, 'r', encoding="utf-8") as file:
+    with open(embedding_path, 'r') as file:
         for line in file:
             line = line.strip()
             if len(line) == 0:
@@ -333,11 +333,11 @@ def load_pretrain_emb(embedding_path):
                 assert (embedd_dim + 1 == len(tokens))
             embedd = np.empty([1, embedd_dim])
             embedd[:] = tokens[1:]
-            embedd_dict[tokens[0]] = embedd
+            embedd_dict[tokens[0].decode('utf-8')] = embedd
     return embedd_dict, embedd_dim
 
 
 if __name__ == '__main__':
     a = np.arange(9.0)
-    print(a)
-    print(norm2one(a))
+    print a
+    print norm2one(a)
