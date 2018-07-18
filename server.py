@@ -49,9 +49,9 @@ class ParseHandler(tornado.web.RequestHandler):
         data.generate_instance_with_gaz(sentence, 'sentence')
         decode_results = main.load_model_decode(model_dir, data, 'raw', gpu, seg)
         result = data.write_decoded_results_back(decode_results, 'raw')
-        data=js.dumps(result)
+        result_output=js.dumps(result)
         self.set_status(200)
-        self.finish(data)
+        self.finish(result_output)
 
 class trainHandler(tornado.web.RequestHandler):
     def set_default_headers(self):
