@@ -8,6 +8,9 @@ import argparse
 import torch
 import main
 import json as js
+import copy
+from tornado.options import define, options
+
 
 model_dir = "/app/data/CommonNER/common.0.model"
 dset_dir = "/app/data/CommonNER/common.dset"
@@ -28,6 +31,8 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Hello, world")
 
 class ParseHandler(tornado.web.RequestHandler):
+    def initialize(self, data):
+        self.data = data
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin","*")
         self.set_header("Access-Control-Allow-Headers","*")
@@ -42,10 +47,13 @@ class ParseHandler(tornado.web.RequestHandler):
         getData = js.loads(self.request.body.decode('utf-8'))  
         sentence = getData["q"]
         
-        global data
+        global dset_dir
         global gpu
         global model_dir
+
+
         seg = False
+        data = main.load_data_setting(dset_dir)
         data.generate_instance_with_gaz(sentence, 'sentence')
         decode_results = main.load_model_decode(model_dir, data, 'raw', gpu, seg)
         result = data.write_decoded_results_back(decode_results, 'raw')
@@ -68,9 +76,10 @@ class trainHandler(tornado.web.RequestHandler):
         self.write("train data")
 
 def make_app():
+    global data 
     return tornado.web.Application([
         (r"/", MainHandler),
-        (r"/parse", ParseHandler),
+        (r"/parse", ParseHandler,dict(data=data)),
         (r"/train", trainHandler)
     ])
 
@@ -79,15 +88,15 @@ def initialize():
     global dset_dir
     global data 
     global gpu
-    data = main.load_data_setting(dset_dir)
+   # data = main.load_data_setting(dset_dir)
     gpu = torch.cuda.is_available()
     return
 
 if __name__ == "__main__":
-    app = make_app()
     print("model initialize... please wait")
     initialize()
     print("Success model initialize!")
+    app = make_app()
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(tornado.options.options.port)

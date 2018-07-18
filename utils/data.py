@@ -338,21 +338,27 @@ class Data:
         
         for idx in range(sent_num):
             sent_length = len(predict_results[idx])
-            data=[]
+            data = {'start': '', 'end': "", 'value': '','entity':''}
+            value=''
             for idy in range(sent_length):
                 pre_su_item = predict_results[idx][idy].split('-')
                 if  pre_su_item[0] == 'S':
-                    data.append("start:" + str(idy))
-                    data.append("end:" + str(idy))
-                    data.append("name:" + pre_su_item[1])
+                    data['start'] = str(idy)
+                    data['end'] = str(idy)
+                    data['value'] = content_list[idx][0][idy].encode('utf-8')
+                    data['entity'] = pre_su_item[1]
                     result.append(data)
-                    data=[]
+                    data = {'start': '', 'end': "", 'value': '','entity':''}
                 if  pre_su_item[0] == 'B':
-                    data.append("start:" + str(idy))
+                    data['start'] = str(idy)
+                    value= value + (content_list[idx][0][idy].encode('utf-8'))
                 if  pre_su_item[0] == 'E':
-                    data.append("end:" + str(idy))
-                    data.append("name:" + pre_su_item[1])
+                    value= value + (content_list[idx][0][idy].encode('utf-8'))
+                    data['end'] = str(idy)
+                    data['value'] = value
+                    data['entity'] = pre_su_item[1]
                     result.append(data)
-                    data=[]
+                    data = {'start': '', 'end': "", 'value': '','entity':''}
+                    value=''
 
         return result
