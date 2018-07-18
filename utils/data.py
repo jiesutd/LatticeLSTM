@@ -281,6 +281,12 @@ class Data:
                                                                   self.biword_alphabet, self.char_alphabet,
                                                                   self.gaz_alphabet, self.label_alphabet,
                                                                   self.number_normalized, self.MAX_SENTENCE_LENGTH)
+      
+        elif name == "sentence":
+            self.raw_texts, self.raw_Ids = read_instance_with_gaz_text(input_file, self.gaz, self.word_alphabet,
+                                                                  self.biword_alphabet, self.char_alphabet,
+                                                                  self.gaz_alphabet, self.label_alphabet,
+                                                                  self.number_normalized, self.MAX_SENTENCE_LENGTH)
         else:
             print("Error: you can only generate train/dev/test instance! Illegal input:%s" % (name))
 
@@ -308,3 +314,45 @@ class Data:
             fout.write('\n')
         fout.close()
         print("Predict %s result has been written into file. %s" % (name, output_file))
+
+    def write_decoded_results_back(self, predict_results, name):
+        sent_num = len(predict_results)
+        content_list = []
+        if name == 'raw':
+            content_list = self.raw_texts
+        elif name == 'test':
+            content_list = self.test_texts
+        elif name == 'dev':
+            content_list = self.dev_texts
+        elif name == 'train':
+            content_list = self.train_texts
+        else:
+            print("Error: illegal name during writing predict result, name should be within train/dev/test/raw !")
+        assert (sent_num == len(content_list))
+        result =[]
+     #   for idx in range(sent_num):
+     #       sent_length = len(predict_results[idx])
+     #       for idy in range(sent_length):
+     #           ## content_list[idx] is a list with [word, char, label]
+     #           result.append(content_list[idx][0][idy].encode('utf-8') + " " + predict_results[idx][idy] + '\n')
+        
+        for idx in range(sent_num):
+            sent_length = len(predict_results[idx])
+            data=[]
+            for idy in range(sent_length):
+                pre_su_item = predict_results[idx][idy].split('-')
+                if  pre_su_item[0] == 'S':
+                    data.append("start:" + str(idy))
+                    data.append("end:" + str(idy))
+                    data.append("name:" + pre_su_item[1])
+                    result.append(data)
+                    data=[]
+                if  pre_su_item[0] == 'B':
+                    data.append("start:" + str(idy))
+                if  pre_su_item[0] == 'E':
+                    data.append("end:" + str(idy))
+                    data.append("name:" + pre_su_item[1])
+                    result.append(data)
+                    data=[]
+
+        return result

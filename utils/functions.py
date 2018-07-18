@@ -130,7 +130,6 @@ def read_seg_instance(input_file, word_alphabet, biword_alphabet, char_alphabet,
             label_Ids = []
     return instence_texts, instence_Ids
 
-
 def read_instance_with_gaz(input_file, gaz, word_alphabet, biword_alphabet, char_alphabet, gaz_alphabet, label_alphabet,
                            number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol='</pad>'):
     in_lines = open(input_file, 'r').readlines()
@@ -218,6 +217,91 @@ def read_instance_with_gaz(input_file, gaz, word_alphabet, biword_alphabet, char
             label_Ids = []
             gazs = []
             gaz_Ids = []
+    return instence_texts, instence_Ids
+
+def read_instance_with_gaz_text(sentence, gaz, word_alphabet, biword_alphabet, char_alphabet, gaz_alphabet, label_alphabet,
+                           number_normalized, max_sent_length, char_padding_size=-1, char_padding_symbol='</pad>'):
+    instence_texts = []
+    instence_Ids = []
+    words = []
+    biwords = []
+    chars = []
+    labels = []
+    word_Ids = []
+    biword_Ids = []
+    char_Ids = []
+    label_Ids = []
+    for idx in xrange(len(sentence)):
+        word = sentence[idx]
+        if number_normalized:
+            word = normalize_word(word)
+        label = "O"
+        if idx < len(sentence) - 1 and len(sentence[idx + 1]) > 2:
+            biword = word + sentence[idx + 1]
+        else:
+            biword = word + NULLKEY
+        biwords.append(biword)
+        words.append(word)
+        labels.append(label)
+        word_Ids.append(word_alphabet.get_index(word))
+        biword_Ids.append(biword_alphabet.get_index(biword))
+        label_Ids.append(label_alphabet.get_index(label))
+        char_list = []
+        char_Id = []
+        for char in word:
+            char_list.append(char)
+        if char_padding_size > 0:
+            char_number = len(char_list)
+            if char_number < char_padding_size:
+                char_list = char_list + [char_padding_symbol] * (char_padding_size - char_number)
+            assert (len(char_list) == char_padding_size)
+        else:
+            ### not padding
+            pass
+        for char in char_list:
+            char_Id.append(char_alphabet.get_index(char))
+        chars.append(char_list)
+        char_Ids.append(char_Id)
+
+
+    if ((max_sent_length < 0) or (len(words) < max_sent_length)) and (len(words) > 0):
+        gazs = []
+        gaz_Ids = []
+        w_length = len(words)
+        # print sentence 
+        # for w in words:
+        #     print w," ",
+        # print
+        for idx in range(w_length):
+            matched_list = gaz.enumerateMatchList(words[idx:])
+            matched_length = [len(a) for a in matched_list]
+            # print idx,"----------"
+            # print "forward...feed:","".join(words[idx:])
+            # for a in matched_list:
+            #     print a,len(a)," ",
+            # print
+
+            # print matched_length
+
+            gazs.append(matched_list)
+            matched_Id = [gaz_alphabet.get_index(entity) for entity in matched_list]
+            if matched_Id:
+                gaz_Ids.append([matched_Id, matched_length])
+            else:
+                gaz_Ids.append([])
+
+        instence_texts.append([words, biwords, chars, gazs, labels])
+        instence_Ids.append([word_Ids, biword_Ids, char_Ids, gaz_Ids, label_Ids])
+    words = []
+    biwords = []
+    chars = []
+    labels = []
+    word_Ids = []
+    biword_Ids = []
+    char_Ids = []
+    label_Ids = []
+    gazs = []
+    gaz_Ids = []
     return instence_texts, instence_Ids
 
 
