@@ -1,4 +1,4 @@
-from trie import Trie 
+from trie import Trie
 
 class Gazetteer:
     def __init__(self, lower):
