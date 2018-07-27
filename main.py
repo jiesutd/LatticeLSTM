@@ -342,7 +342,7 @@ def load_model_decode(model_dir, data, name, gpu, seg=True):
     model = SeqModel(data)
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
-    #     model.load_state_dict(torch.load(model_dir), map_location=lambda storage, loc: storage)
+    #     model.load_state_dict(torch.load(model_dir, map_location=lambda storage, loc: storage))
     #     # model = torch.load(model_dir, map_location=lambda storage, loc: storage)
     # else:
     model.load_state_dict(torch.load(model_dir))
