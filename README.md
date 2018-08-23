@@ -10,7 +10,8 @@ Details will be updated soon.
 Requirement:
 ======
 	Python: 2.7   
-	PyTorch: 0.3
+	PyTorch: 0.3.0 
+	(for 0.3.1, please refer [issue#8](https://github.com/jiesutd/LatticeLSTM/issues/8))
 
 Input format:
 ======
