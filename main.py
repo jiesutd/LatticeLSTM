@@ -99,13 +99,13 @@ def save_data_setting(data, save_file):
     new_data.test_Ids = []
     new_data.raw_Ids = []
     ## save data settings
-    with open(save_file, 'w') as fp:
+    with open(save_file, 'wb') as fp:
         pickle.dump(new_data, fp)
     print("Data setting saved to file: ", save_file)
 
 
 def load_data_setting(save_file):
-    with open(save_file, 'r') as fp:
+    with open(save_file, 'rb') as fp:
         data = pickle.load(fp)
     print("Data setting loaded from file: ", save_file)
     data.show_data_summary()
@@ -368,9 +368,9 @@ if __name__ == '__main__':
     parser.add_argument('--status', choices=['train', 'test', 'decode'], help='update algorithm', default='train')
     parser.add_argument('--savemodel', default="data/model/saved_model.lstmcrf.")
     parser.add_argument('--savedset', help='Dir of saved data setting', default="data/save.dset")
-    parser.add_argument('--train', default="./data/demo.train.char")
-    parser.add_argument('--dev', default="./data/demo.dev.char")
-    parser.add_argument('--test', default="./data/demo.test.char")
+    parser.add_argument('--train', default="data/conll03/train.bmes") 
+    parser.add_argument('--dev', default="data/conll03/dev.bmes" )  
+    parser.add_argument('--test', default="data/conll03/test.bmes") 
     parser.add_argument('--seg', default="True") 
     parser.add_argument('--extendalphabet', default="True") 
     parser.add_argument('--raw') 
