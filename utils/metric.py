@@ -59,7 +59,7 @@ def get_ner_fmeasure(golden_lists, predict_lists, label_type="BMES"):
         f_measure = 2*precision*recall/(precision+recall)
     accuracy = (right_tag+0.0)/all_tag
     # print "Accuracy: ", right_tag,"/",all_tag,"=",accuracy
-    print "gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num
+    print("gold_num = ", golden_num, " pred_num = ", predict_num, " right_num = ", right_num)
     return accuracy, precision, recall, f_measure
 
 
@@ -213,19 +213,19 @@ def readTwoLabelSentence(input_file, pred_col=-1):
 
 
 def fmeasure_from_file(golden_file, predict_file, label_type="BMES"):
-    print "Get f measure from file:", golden_file, predict_file
-    print "Label format:",label_type
+    print("Get f measure from file:", golden_file, predict_file)
+    print("Label format:",label_type)
     golden_sent,golden_labels = readSentence(golden_file)
     predict_sent,predict_labels = readSentence(predict_file)
     acc, P,R,F = get_ner_fmeasure(golden_labels, predict_labels, label_type)
-    print ("Acc:%s, P:%s R:%s, F:%s"%(acc, P,R,F))
+    print(("Acc:%s, P:%s R:%s, F:%s"%(acc, P,R,F)))
 
 
 
 def fmeasure_from_singlefile(twolabel_file, label_type="BMES", pred_col=-1):
     sent,golden_labels,predict_labels = readTwoLabelSentence(twolabel_file, pred_col)
     P,R,F = get_ner_fmeasure(golden_labels, predict_labels, label_type)
-    print ("P:%s, R:%s, F:%s"%(P,R,F))
+    print(("P:%s, R:%s, F:%s"%(P,R,F)))
 
 
 
