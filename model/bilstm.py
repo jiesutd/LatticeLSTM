@@ -10,14 +10,14 @@ import torch.nn.functional as F
 import numpy as np
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 # from kblayer import GazLayer
-from charbilstm import CharBiLSTM
-from charcnn import CharCNN
-from latticelstm import LatticeLSTM
+from .charbilstm import CharBiLSTM
+from .charcnn import CharCNN
+from .latticelstm import LatticeLSTM
 
 class BiLSTM(nn.Module):
     def __init__(self, data):
         super(BiLSTM, self).__init__()
-        print "build batched bilstm..."
+        print("build batched bilstm...")
         self.use_bigram = data.use_bigram
         self.gpu = data.HP_gpu
         self.use_char = data.HP_use_char
@@ -32,7 +32,7 @@ class BiLSTM(nn.Module):
             elif data.char_features == "LSTM":
                 self.char_feature = CharBiLSTM(data.char_alphabet.size(), self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
             else:
-                print "Error char feature selection, please check parameter data.char_features (either CNN or LSTM)."
+                print("Error char feature selection, please check parameter data.char_features (either CNN or LSTM).")
                 exit(0)
         self.embedding_dim = data.word_emb_dim
         self.hidden_dim = data.HP_hidden_dim

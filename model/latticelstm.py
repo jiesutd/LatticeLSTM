@@ -176,12 +176,12 @@ class LatticeLSTM(nn.Module):
     def __init__(self, input_dim, hidden_dim, word_drop, word_alphabet_size, word_emb_dim, pretrain_word_emb=None, left2right=True, fix_word_emb=True, gpu=True,  use_bias = True):
         super(LatticeLSTM, self).__init__()
         skip_direction = "forward" if left2right else "backward"
-        print "build LatticeLSTM... ", skip_direction, ", Fix emb:", fix_word_emb, " gaz drop:", word_drop
+        print("build LatticeLSTM... ", skip_direction, ", Fix emb:", fix_word_emb, " gaz drop:", word_drop)
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         self.word_emb = nn.Embedding(word_alphabet_size, word_emb_dim)
         if pretrain_word_emb is not None:
-            print "load pretrain word emb...", pretrain_word_emb.shape
+            print("load pretrain word emb...", pretrain_word_emb.shape)
             self.word_emb.weight.data.copy_(torch.from_numpy(pretrain_word_emb))
 
         else:
@@ -233,7 +233,7 @@ class LatticeLSTM(nn.Module):
                 hx = hx.cuda()
                 cx = cx.cuda()
         
-        id_list = range(seq_len)
+        id_list = list(range(seq_len))
         if not self.left2right:
             id_list = list(reversed(id_list))
         input_c_list = init_list_of_objects(seq_len)

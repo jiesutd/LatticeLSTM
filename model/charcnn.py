@@ -12,7 +12,7 @@ import numpy as np
 class CharCNN(nn.Module):
     def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu):
         super(CharCNN, self).__init__()
-        print "build batched char cnn..."
+        print("build batched char cnn...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         self.char_drop = nn.Dropout(dropout)

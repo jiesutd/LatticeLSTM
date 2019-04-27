@@ -13,7 +13,7 @@ import numpy as np
 class CharBiLSTM(nn.Module):
     def __init__(self, alphabet_size, embedding_dim, hidden_dim, dropout, gpu, bidirect_flag = True):
         super(CharBiLSTM, self).__init__()
-        print "build batched char bilstm..."
+        print("build batched char bilstm...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         if bidirect_flag:
