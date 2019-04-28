@@ -340,6 +340,9 @@ def load_model_decode(model_dir, data, name, gpu, seg=True):
     data.HP_gpu = gpu
     print "Load Model from file: ", model_dir
     model = SeqModel(data)
+    # added by zhiwei
+    data.label_alphabet_size -= 2
+    
     ## load model need consider if the model trained in GPU and load in CPU, or vice versa
     # if not gpu:
     #     model.load_state_dict(torch.load(model_dir, map_location=lambda storage, loc: storage))
